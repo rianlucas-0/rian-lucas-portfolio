@@ -1,5 +1,5 @@
 const root=document.documentElement,home=location.pathname.includes('contato')?'index.html':'';
-const L=[['Sobre','#sobre'],['Habilidades','#habilidades'],['Experiência','#experiencia'],['Educação','#educacao'],['Projetos','#projetos']];
+const L=[['Sobre','#sobre'],['Habilidades','#habilidades'],['Experiência','#experiencia'],['Educação','#educacao'],['Certificados','#certificados'],['Projetos','#projetos']];
 document.getElementById('hd').innerHTML=`<header><div class="w"><a class="logo" href="${home||'#'}">rian<b>@</b>lucas:~$</a><nav id="nv">${L.map(l=>`<a href="${home}${l[1]}">${l[0]}</a>`).join('')}<a href="contato.html">Contato</a></nav><button id="tg" aria-label="Alternar tema"></button><button id="mb" aria-label="Menu">☰</button></div></header>`;
 document.getElementById('ft').innerHTML=`<footer><div class="w"><span>[rian] <a href="index.html">0:portfolio${home?'':'*'}</a><a href="contato.html">1:contato${home?'*':''}</a></span><span><a href="https://github.com/rianlucas-0" target="_blank" rel="noopener">github</a><a href="https://www.linkedin.com/in/rianlucassds/" target="_blank" rel="noopener">linkedin</a> Belo Horizonte, MG <b id="ck"></b></span></div></footer>`;
 const tick=()=>document.getElementById('ck').textContent=new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});tick();setInterval(tick,3e4);
@@ -26,7 +26,7 @@ const d=await r.json();if(!r.ok)throw new Error(d.error||'Erro ao enviar');m.cla
 catch(err){m.className='er';m.textContent='500 · '+err.message+'. Se preferir, fale comigo pelo WhatsApp.'}b.disabled=false};
 
 // Estilo terminal: comandos acima dos títulos e janelas estilo macOS
-const CMD={sobre:'cat sobre.md',habilidades:'ls -la habilidades/',experiencia:'cat experiencia.log',educacao:'cat educacao.txt',projetos:'ls ~/projetos',contato:'ssh contato@rian'};
+const CMD={sobre:'cat sobre.md',habilidades:'ls -la habilidades/',experiencia:'cat experiencia.log',educacao:'cat educacao.txt',certificados:'ls ~/certificados',projetos:'ls ~/projetos',contato:'ssh contato@rian'};
 document.querySelectorAll('h2').forEach(h=>{const k=h.closest('section')?.id||'contato';h.insertAdjacentHTML('beforebegin',`<div class="cmd"><b>rian@lucas</b>:<u>~</u>$ ${CMD[k]||'ls'}</div>`)});
 document.querySelectorAll('.card').forEach(c=>{const h=c.querySelector('h3');c.dataset.t=h?h.textContent.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')+'.sh':'~/rian'});
 document.querySelector('.term')?.setAttribute('data-t','bash · rian@lucas');

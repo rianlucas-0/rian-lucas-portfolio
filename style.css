@@ -73,3 +73,6 @@ input,textarea{font-family:var(--m);font-size:14px}label{font-family:var(--m);co
 footer{position:fixed;bottom:0;left:0;right:0;margin:0;padding:6px 0;border:0;background:var(--ac2);color:var(--bg);font:12.5px var(--m);z-index:9}
 footer a{color:inherit;text-decoration:none;margin:0 6px;font-weight:700}footer a:hover{text-decoration:underline}
 @media(prefers-reduced-motion:reduce){.ty{width:auto!important}.o{opacity:1!important}}
+.cert{text-align:center}.cert img{display:block;margin:0 auto 14px;width:112px;height:112px;border-radius:14px}
+.cert p{color:var(--mu);font-size:13.5px;margin:4px 0 14px}.cert a{font-weight:700;font-size:14px;text-decoration:none}
+.cert:hover{border-color:var(--ac);transform:translateY(-3px)}
