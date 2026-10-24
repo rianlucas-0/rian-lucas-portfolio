@@ -22,8 +22,8 @@ size();draw();addEventListener('resize',()=>{size();still&&draw()});
 const f=document.getElementById('cf');
 if(f)f.onsubmit=async e=>{e.preventDefault();const m=document.getElementById('msg'),b=f.querySelector('button');m.className='';m.textContent='Enviando…';b.disabled=true;
 try{const r=await fetch('/api/contact',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(Object.fromEntries(new FormData(f)))});
-const d=await r.json();if(!r.ok)throw new Error(d.error||'Erro ao enviar');m.className='ok';m.textContent='250 OK · Mensagem enviada! Respondo assim que possível.';f.reset()}
-catch(err){m.className='er';m.textContent='500 · '+err.message+'. Se preferir, fale comigo pelo WhatsApp.'}b.disabled=false};
+const d=await r.json();if(!r.ok)throw new Error(d.error||'Erro ao enviar');m.className='ok';m.textContent='Mensagem enviada! Respondo assim que possível.';f.reset()}
+catch(err){m.className='er';m.textContent=err.message+'. Se preferir, fale comigo pelo WhatsApp.'}b.disabled=false};
 
 // Estilo terminal: comandos acima dos títulos e janelas estilo macOS
 const CMD={sobre:'cat sobre.md',habilidades:'ls -la habilidades/',experiencia:'cat experiencia.log',educacao:'cat educacao.txt',certificados:'ls ~/certificados',projetos:'ls ~/projetos',contato:'ssh contato@rian'};
