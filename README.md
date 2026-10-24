@@ -11,4 +11,3 @@ Site estático (HTML/CSS/JS) + função serverless em `api/contact.js` (Resend).
 
 ## Projetos
 Em `index.html`, copie um bloco `<article class="card proj">` e troque título, descrição, tags e link.
-# rian-lucas-portfolio

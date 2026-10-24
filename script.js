@@ -10,12 +10,12 @@ document.querySelectorAll('nav a').forEach(a=>a.onclick=()=>document.getElementB
 const io=new IntersectionObserver(e=>e.forEach(x=>x.isIntersecting&&x.target.classList.add('on')),{threshold:.12});
 document.querySelectorAll('.rv').forEach(el=>io.observe(el));
 // Topologia de rede animada
-const cv=document.getElementById('net'),c=cv.getContext('2d'),still=matchMedia('(prefers-reduced-motion:reduce)').matches;let N=[],W,H;
-function size(){W=cv.width=innerWidth;H=cv.height=innerHeight;N=Array.from({length:Math.min(60,Math.floor(W*H/22000))},()=>({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3}))}
-function draw(){c.clearRect(0,0,W,H);const col=getComputedStyle(root).getPropertyValue('--ac').trim()||'#38bdf8';c.fillStyle=c.strokeStyle=col;
-for(const a of N){if(!still){a.x+=a.vx;a.y+=a.vy;if(a.x<0||a.x>W)a.vx*=-1;if(a.y<0||a.y>H)a.vy*=-1}
+const cv=document.getElementById('net'),c=cv.getContext('2d'),slow=matchMedia('(prefers-reduced-motion:reduce)').matches,still=false,k=slow?.5:1;let N=[],W,H;
+function size(){W=cv.width=innerWidth;H=cv.height=innerHeight;N=Array.from({length:Math.min(60,Math.floor(W*H/22000))},()=>({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.6,vy:(Math.random()-.5)*.6}))}
+function draw(){c.clearRect(0,0,W,H);const cs=getComputedStyle(root),col=cs.getPropertyValue('--ac').trim()||'#38bdf8',g=cs.getPropertyValue('--ac2').trim()||'#34d399',now=performance.now();c.fillStyle=c.strokeStyle=col;
+for(const a of N){if(!still){a.x+=a.vx*k;a.y+=a.vy*k;if(a.x<0||a.x>W)a.vx*=-1;if(a.y<0||a.y>H)a.vy*=-1}
 c.beginPath();c.arc(a.x,a.y,2,0,7);c.fill();
-for(const b of N){const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<150){c.globalAlpha=1-d/150;c.beginPath();c.moveTo(a.x,a.y);c.lineTo(b.x,b.y);c.stroke();c.globalAlpha=1}}}
+for(const b of N){const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<150){c.globalAlpha=1-d/150;c.beginPath();c.moveTo(a.x,a.y);c.lineTo(b.x,b.y);c.stroke();const t=((now/(slow?4500:2800))+(a.x*b.y%1))%1;c.fillStyle=g;c.globalAlpha=Math.min(1,(1-d/150)*2);c.beginPath();c.arc(a.x+(b.x-a.x)*t,a.y+(b.y-a.y)*t,2.4,0,7);c.fill();c.fillStyle=col;c.globalAlpha=1}}}
 if(!still)requestAnimationFrame(draw)}
 size();draw();addEventListener('resize',()=>{size();still&&draw()});
 // Formulário
