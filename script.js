@@ -35,14 +35,17 @@ document.querySelectorAll('h2').forEach(h=>{const k=h.closest('section')?.id||'c
 document.querySelectorAll('.card').forEach(c=>{const h=c.querySelector('h3');c.dataset.t=h?h.textContent.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')+'.sh':'~/rian'});
 
 document.querySelector('.term')?.setAttribute('data-t','bash · rian@lucas');
-// Prévia automática dos projetos
+// Prévia automática dos projetos (WordPress mShots)
 document.querySelectorAll('[data-site]').forEach(c=>{
-const u=c.dataset.site,a=document.createElement('a'),i=new Image();
+const u=c.dataset.site,a=document.createElement('a'),i=new Image(),dia=new Date().toISOString().slice(0,10).replace(/-/g,'');
+const base='https://s.wordpress.com/mshots/v1/'+encodeURIComponent(u+(u.includes('?')?'&':'?')+'v='+dia)+'?w=1200';
+let n=0;
 a.className='proj-img';a.href=u;a.target='_blank';a.rel='noopener';
 i.alt='Prévia do site '+(c.querySelector('h3')?.textContent||'');i.loading='lazy';
-i.src='https://api.microlink.io/?url='+encodeURIComponent(u)+'&screenshot=true&meta=false&embed=screenshot.url';
+// enquanto gera a captura, o mShots mostra uma imagem provisória menor: tenta de novo até 5 vezes
+i.onload=()=>{if(i.naturalWidth<1000&&n++<5)setTimeout(()=>{i.src=base+'&t='+Date.now()},4000)};
 i.onerror=()=>a.remove();
-a.appendChild(i);c.prepend(a);
+i.src=base;a.appendChild(i);c.prepend(a);
 });
 
 // Paginação (certificados e projetos)
