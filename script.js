@@ -45,13 +45,29 @@ i.onerror=()=>a.remove();
 a.appendChild(i);c.prepend(a);
 });
 
-// Paginação dos certificados
-(()=>{const g=document.querySelector('#certificados .grid');if(!g)return;
-const items=[...g.querySelectorAll('.cert')],per=3,pages=Math.ceil(items.length/per);if(pages<2)return;
+// Paginação (certificados e projetos)
+function paginar(sel,item,per){const g=document.querySelector(sel);if(!g)return;
+const items=[...g.querySelectorAll(item)],pages=Math.ceil(items.length/per);if(pages<2)return;
 const nav=document.createElement('div');nav.className='pager';g.after(nav);
 const show=p=>{items.forEach((el,i)=>el.hidden=Math.floor(i/per)+1!==p);
 nav.innerHTML=`<button data-go="${p-1}" ${p===1?'disabled':''} aria-label="Página anterior">&lt; anterior</button>`
 +Array.from({length:pages},(_,i)=>`<button data-go="${i+1}" ${i+1===p?'aria-current="page"':''}>${i+1}</button>`).join('')
 +`<button data-go="${p+1}" ${p===pages?'disabled':''} aria-label="Próxima página">próxima &gt;</button>`};
 nav.onclick=e=>{const b=e.target.closest('button[data-go]');if(b&&!b.disabled)show(+b.dataset.go)};
-show(1)})();
+show(1)}
+paginar('#certificados .grid','.cert',3);
+paginar('#projetos .grid','.proj',3);
+// Cards de projeto do mesmo tamanho (inclusive os de outras páginas)
+let lastW=innerWidth;
+function igualar(){const g=document.querySelector('#projetos .grid');if(!g)return;
+  const cards=[...g.querySelectorAll('.proj')];
+  cards.forEach(c=>c.style.minHeight='');
+  const ocultos=cards.filter(c=>c.hidden);ocultos.forEach(c=>c.hidden=false);
+  const maior=Math.max(...cards.map(c=>c.offsetHeight));
+  ocultos.forEach(c=>c.hidden=true);
+  cards.forEach(c=>c.style.minHeight=maior+'px');
+}
+igualar();
+document.fonts?.ready.then(igualar);
+addEventListener('load',igualar);
+addEventListener('resize',()=>{if(innerWidth!==lastW){lastW=innerWidth;igualar()}});
