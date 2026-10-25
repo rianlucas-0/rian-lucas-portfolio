@@ -78,3 +78,8 @@ footer a{color:inherit;text-decoration:none;margin:0 6px;font-weight:700}footer 
 .cert{text-align:center}.cert img{display:block;margin:0 auto 14px;width:112px;height:112px;border-radius:14px}
 .cert p{color:var(--mu);font-size:13.5px;margin:4px 0 14px}.cert a{font-weight:700;font-size:14px;text-decoration:none}
 .cert:hover{border-color:var(--ac);transform:translateY(-3px)}
+.pager{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin-top:22px}
+.pager button{font:600 13px var(--m);background:var(--bg2);color:var(--tx);border:1px solid var(--bd);border-radius:6px;padding:7px 12px;cursor:pointer}
+.pager button:hover:not(:disabled){border-color:var(--ac);color:var(--ac)}
+.pager button[aria-current]{background:var(--ac);color:var(--bg);border-color:var(--ac)}
+.pager button:disabled{opacity:.4;cursor:default}

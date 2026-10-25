@@ -9,15 +9,19 @@ document.getElementById('mb').onclick=()=>document.getElementById('nv').classLis
 document.querySelectorAll('nav a').forEach(a=>a.onclick=()=>document.getElementById('nv').classList.remove('open'));
 const io=new IntersectionObserver(e=>e.forEach(x=>x.isIntersecting&&x.target.classList.add('on')),{threshold:.12});
 document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+
 // Topologia de rede animada
-const cv=document.getElementById('net'),c=cv.getContext('2d'),slow=matchMedia('(prefers-reduced-motion:reduce)').matches,still=false,k=slow?.5:1;let N=[],W,H;
-function size(){W=cv.width=innerWidth;H=cv.height=innerHeight;N=Array.from({length:Math.min(60,Math.floor(W*H/22000))},()=>({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.6,vy:(Math.random()-.5)*.6}))}
+const cv=document.getElementById('net'),c=cv.getContext('2d'),slow=matchMedia('(prefers-reduced-motion:reduce)').matches,k=slow?.5:1;let N=[],W,H;
+function size(){W=cv.width=innerWidth;H=cv.height=Math.max(innerHeight,screen.height);cv.style.width=W+'px';cv.style.height=H+'px';
+N=Array.from({length:Math.min(60,Math.floor(W*H/22000))},()=>({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.6,vy:(Math.random()-.5)*.6}))}
 function draw(){c.clearRect(0,0,W,H);const cs=getComputedStyle(root),col=cs.getPropertyValue('--ac').trim()||'#38bdf8',g=cs.getPropertyValue('--ac2').trim()||'#34d399',now=performance.now();c.fillStyle=c.strokeStyle=col;
-for(const a of N){if(!still){a.x+=a.vx*k;a.y+=a.vy*k;if(a.x<0||a.x>W)a.vx*=-1;if(a.y<0||a.y>H)a.vy*=-1}
+for(const a of N){a.x+=a.vx*k;a.y+=a.vy*k;if((a.x<0&&a.vx<0)||(a.x>W&&a.vx>0))a.vx*=-1;if((a.y<0&&a.vy<0)||(a.y>H&&a.vy>0))a.vy*=-1;
 c.beginPath();c.arc(a.x,a.y,2,0,7);c.fill();
 for(const b of N){const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<150){c.globalAlpha=1-d/150;c.beginPath();c.moveTo(a.x,a.y);c.lineTo(b.x,b.y);c.stroke();const t=((now/(slow?4500:2800))+(a.x*b.y%1))%1;c.fillStyle=g;c.globalAlpha=Math.min(1,(1-d/150)*2);c.beginPath();c.arc(a.x+(b.x-a.x)*t,a.y+(b.y-a.y)*t,2.4,0,7);c.fill();c.fillStyle=col;c.globalAlpha=1}}}
-if(!still)requestAnimationFrame(draw)}
-size();draw();addEventListener('resize',()=>{size();still&&draw()});
+requestAnimationFrame(draw)}
+size();draw();
+// No celular, rolar a página dispara "resize" (barra do navegador). Só recria a rede se a largura mudar.
+addEventListener('resize',()=>{if(innerWidth!==W||innerHeight>H)size()});
 // Formulário
 const f=document.getElementById('cf');
 if(f)f.onsubmit=async e=>{e.preventDefault();const m=document.getElementById('msg'),b=f.querySelector('button');m.className='';m.textContent='Enviando…';b.disabled=true;
@@ -40,3 +44,14 @@ i.src='https://api.microlink.io/?url='+encodeURIComponent(u)+'&screenshot=true&m
 i.onerror=()=>a.remove();
 a.appendChild(i);c.prepend(a);
 });
+
+// Paginação dos certificados
+(()=>{const g=document.querySelector('#certificados .grid');if(!g)return;
+const items=[...g.querySelectorAll('.cert')],per=3,pages=Math.ceil(items.length/per);if(pages<2)return;
+const nav=document.createElement('div');nav.className='pager';g.after(nav);
+const show=p=>{items.forEach((el,i)=>el.hidden=Math.floor(i/per)+1!==p);
+nav.innerHTML=`<button data-go="${p-1}" ${p===1?'disabled':''} aria-label="Página anterior">&lt; anterior</button>`
++Array.from({length:pages},(_,i)=>`<button data-go="${i+1}" ${i+1===p?'aria-current="page"':''}>${i+1}</button>`).join('')
++`<button data-go="${p+1}" ${p===pages?'disabled':''} aria-label="Próxima página">próxima &gt;</button>`};
+nav.onclick=e=>{const b=e.target.closest('button[data-go]');if(b&&!b.disabled)show(+b.dataset.go)};
+show(1)})();
