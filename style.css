@@ -38,6 +38,8 @@ h1{font-size:clamp(44px,8vw,84px);line-height:.98;letter-spacing:-.04em}
 .proj{border-style:dashed;display:flex;flex-direction:column;gap:12px;min-height:210px}
 .proj:hover{border-color:var(--ac);transform:translateY(-3px)}.proj p{color:var(--mu);font-size:14.5px;flex:1}
 .proj a{font-weight:700;font-size:14px;text-decoration:none}
+.proj-img{display:block;border:1px solid var(--bd);border-radius:6px;overflow:hidden}
+.proj-img img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;object-position:top}
 .ct{display:grid;grid-template-columns:1.2fr .8fr;gap:24px;align-items:start}
 form{display:grid;gap:14px}label{font-weight:600;font-size:14px;display:grid;gap:6px}
 input,textarea{font:inherit;background:var(--bg);color:var(--tx);border:1px solid var(--bd);border-radius:8px;padding:11px 13px;width:100%}

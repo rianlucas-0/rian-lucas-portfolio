@@ -29,4 +29,14 @@ catch(err){m.className='er';m.textContent=err.message+'. Se preferir, fale comig
 const CMD={sobre:'cat sobre.md',habilidades:'ls -la habilidades/',experiencia:'cat experiencia.log',educacao:'cat educacao.txt',certificados:'ls ~/certificados',projetos:'ls ~/projetos',contato:'ssh contato@rian'};
 document.querySelectorAll('h2').forEach(h=>{const k=h.closest('section')?.id||'contato';h.insertAdjacentHTML('beforebegin',`<div class="cmd"><b>rian@lucas</b>:<u>~</u>$ ${CMD[k]||'ls'}</div>`)});
 document.querySelectorAll('.card').forEach(c=>{const h=c.querySelector('h3');c.dataset.t=h?h.textContent.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')+'.sh':'~/rian'});
+
 document.querySelector('.term')?.setAttribute('data-t','bash · rian@lucas');
+// Prévia automática dos projetos
+document.querySelectorAll('[data-site]').forEach(c=>{
+const u=c.dataset.site,a=document.createElement('a'),i=new Image();
+a.className='proj-img';a.href=u;a.target='_blank';a.rel='noopener';
+i.alt='Prévia do site '+(c.querySelector('h3')?.textContent||'');i.loading='lazy';
+i.src='https://api.microlink.io/?url='+encodeURIComponent(u)+'&screenshot=true&meta=false&embed=screenshot.url';
+i.onerror=()=>a.remove();
+a.appendChild(i);c.prepend(a);
+});
